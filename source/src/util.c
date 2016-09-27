@@ -2,7 +2,7 @@
 
 #include "util.h"
 
-const char SINGLE_OPERATORS[] = {
+const char CHAR_OPERATORS[] = {
     '=', '>', '<', '!', '+', '-', '*', '/', '^', '&', '|' 
 };
 const char DELIMITERS[] = {
@@ -15,7 +15,8 @@ const char* RESERVERD_WORDS[] = {
     "if", "else", "while", "int", "float", "string",
     "return", "const", "break", "continue", "read", "write"
 };
-const char* COMPARISON_OPERATORS[] = {
+const char* OPERATORS[] = {
+    "=", ">", "<", "!", "+", "-", "*", "/", "^", "&", "|",
     "==", ">=", "<=", "!=", "&&", "||"
 };
 
@@ -45,8 +46,8 @@ int isAlpha(char c) {
     return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z');
 }
 
-int isOperator(char c) {
-    return isInCharArray(SINGLE_OPERATORS, sizeof(SINGLE_OPERATORS)/sizeof(char), c);
+int isCharOperator(char c) {
+    return isInCharArray(CHAR_OPERATORS, sizeof(CHAR_OPERATORS)/sizeof(char), c);
 }
 
 int isDelimiter(char c) {
@@ -69,7 +70,7 @@ int isReserverdWord(const char* c) {
     return isInCharPtrArray(RESERVERD_WORDS, sizeof(RESERVERD_WORDS)/sizeof(const char *), c);
 }
 
-int isComparisonOperator(const char* c) {
-    return isInCharPtrArray(COMPARISON_OPERATORS, sizeof(COMPARISON_OPERATORS)/sizeof(const char *), c);
+int isStrOperator(const char* c) {
+    return isInCharPtrArray(OPERATORS, sizeof(OPERATORS)/sizeof(const char *), c);
 }
 

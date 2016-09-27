@@ -7,8 +7,7 @@ typedef enum {
     CLASS_STRING_LIT, // literal string
     CLASS_RESERVED_WORD, // if, while, int, ...
     CLASS_IDENTIFIER, // variable name
-    CLASS_SINGLE_OPERATOR, // '=', '>', '<', '!', '+', '-', '*', '/'
-    CLASS_DOUBLE_OPERATOR, // "==", ">=", "<=", "!="
+    CLASS_OPERATOR, // '=', '>', '<', '!', '+', '-', '*', '/', "==", ">=", "<=", "!="
     CLASS_DELIMITER, //  '{', '}', '[', ']', ',', ';', ' ', '\t'
 } TokenClass;
 

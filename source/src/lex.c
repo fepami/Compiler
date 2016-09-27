@@ -9,30 +9,28 @@
 LexStateData lexStateData;
 
 /*
- *	Table that represents the Transductor states
- *
- *
- *			digit	alpha	operator	DELIMITER	COMM_INIT	DOT   STRING_QUOTE
- *	INIT
- *	COMMENT
- *	N_INT
- *	FLOAT
- *	STRING_LIT
- *	ALPHAN
- *	OP
- *	DELIM
- *	LEX_ERROR
+ *              DIGIT           APLHA           OPERATOR        DELIMITER       COMM_INIT       DOT             STRING_QUOTE
+ *  INIT
+ *  COMMENT
+ *  N_INT
+ *  FLOAT
+ *  STRING_LIT
+ *  ALPHAN
+ *  OP
+ *  DELIM
+ *  LEX_ERROR
+ *              DIGIT           APLHA           OPERATOR        DELIMITER       COMM_INIT       DOT             STRING_QUOTE
  */
 const LexState nextState[STATES_SIZE][IN_CLASS_SIZE] = {
-    { ST_NUM_INT,   ST_APLHANUM,    ST_OPERATOR,    ST_DELIMITER,   ST_COMMENT,     ST_LEX_ERROR,   ST_STR_LIT      },
-    { ST_COMMENT,   ST_COMMENT,     ST_COMMENT,     ST_COMMENT,     ST_COMMENT,     ST_COMMENT,     ST_COMMENT      },
-    { ST_NUM_INT,   ST_TOKEN_END,   ST_TOKEN_END,   ST_TOKEN_END,   ST_TOKEN_END,   ST_NUM_FLOAT,   ST_TOKEN_END    },
-    { ST_NUM_FLOAT, ST_TOKEN_END,   ST_TOKEN_END,   ST_TOKEN_END,   ST_TOKEN_END,   ST_LEX_ERROR,   ST_LEX_ERROR    },
-    { ST_STR_LIT,   ST_STR_LIT,     ST_STR_LIT,     ST_STR_LIT,     ST_STR_LIT,     ST_STR_LIT,     ST_TOKEN_END    },
-    { ST_APLHANUM,  ST_APLHANUM,    ST_TOKEN_END,   ST_TOKEN_END,   ST_TOKEN_END,   ST_LEX_ERROR,   ST_LEX_ERROR    },
-    { ST_TOKEN_END, ST_TOKEN_END,   ST_OPERATOR,    ST_TOKEN_END,   ST_TOKEN_END,   ST_TOKEN_END,   ST_TOKEN_END    },
-    { ST_TOKEN_END, ST_TOKEN_END,   ST_TOKEN_END,   ST_TOKEN_END,   ST_TOKEN_END,   ST_TOKEN_END,   ST_TOKEN_END    },
-    { ST_LEX_ERROR, ST_LEX_ERROR,   ST_LEX_ERROR,   ST_LEX_ERROR,   ST_LEX_ERROR,   ST_LEX_ERROR,   ST_LEX_ERROR    }
+        {       ST_NUM_INT,     ST_APLHANUM,    ST_OPERATOR,    ST_DELIMITER,   ST_COMMENT,     ST_LEX_ERROR,   ST_STR_LIT      },
+        {       ST_COMMENT,     ST_COMMENT,     ST_COMMENT,     ST_COMMENT,     ST_COMMENT,     ST_COMMENT,     ST_COMMENT      },
+        {       ST_NUM_INT,     ST_TOKEN_END,   ST_TOKEN_END,   ST_TOKEN_END,   ST_TOKEN_END,   ST_NUM_FLOAT,   ST_TOKEN_END    },
+        {       ST_NUM_FLOAT,   ST_TOKEN_END,   ST_TOKEN_END,   ST_TOKEN_END,   ST_TOKEN_END,   ST_LEX_ERROR,   ST_LEX_ERROR    },
+        {       ST_STR_LIT,     ST_STR_LIT,     ST_STR_LIT,     ST_STR_LIT,     ST_STR_LIT,     ST_STR_LIT,     ST_TOKEN_END    },
+        {       ST_APLHANUM,    ST_APLHANUM,    ST_TOKEN_END,   ST_TOKEN_END,   ST_TOKEN_END,   ST_LEX_ERROR,   ST_LEX_ERROR    },
+        {       ST_TOKEN_END,   ST_TOKEN_END,   ST_OPERATOR,    ST_TOKEN_END,   ST_TOKEN_END,   ST_TOKEN_END,   ST_TOKEN_END    },
+        {       ST_TOKEN_END,   ST_TOKEN_END,   ST_TOKEN_END,   ST_TOKEN_END,   ST_TOKEN_END,   ST_TOKEN_END,   ST_TOKEN_END    },
+        {       ST_LEX_ERROR,   ST_LEX_ERROR,   ST_LEX_ERROR,   ST_LEX_ERROR,   ST_LEX_ERROR,   ST_LEX_ERROR,   ST_LEX_ERROR    }
 };
 
 
@@ -95,27 +93,28 @@ void handleError(LexStateData* lsd) {
 }
 
 /*
- *			digit	alpha	operator	DELIMITER	COMM_INIT	DOT	STRING_QUOTE
- *	INIT
- *	COMMENT
- *	N_INT
- *	FLOAT
- *	STR_LIT
- *	ALPHAN
- *	OP
- *	DELIM
- *	LEX_ERROR
+ *              DIGIT           APLHA           OPERATOR        DELIMITER               COMM_INIT           DOT             STRING_QUOTE
+ *  INIT
+ *  COMMENT
+ *  N_INT
+ *  FLOAT
+ *  STR_LIT
+ *  ALPHAN
+ *  OP
+ *  DELIM
+ *  LEX_ERROR
+ *              DIGIT           APLHA           OPERATOR        DELIMITER               COMM_INIT           DOT             STRING_QUOTE
  */
 void (* stateFunction[STATES_SIZE][IN_CLASS_SIZE]) (LexStateData* lsd) = {
-{ appendInput,      appendInput,    appendInput,    handleDelimiterInit,    handleCommentInit,  handleError,    handleStrLit },
-{ ignoreInput,      ignoreInput,    ignoreInput,    handleCommentDelimiter, ignoreInput,        ignoreInput,    ignoreInput },
-{ appendInput,      handleTokenEnd, handleTokenEnd, handleTokenEnd,         handleTokenEnd,     appendInput,    handleError },
-{ appendInput,      handleTokenEnd, handleTokenEnd, handleTokenEnd,         handleTokenEnd,     handleError,    handleError },
-{ handleStrLit,     handleStrLit,   handleStrLit,   handleStrLit,           handleStrLit,       handleStrLit,   handleStrLit},
-{ appendInput,      appendInput,    handleTokenEnd, handleTokenEnd,         handleTokenEnd,     handleError,    handleError },
-{ handleTokenEnd,   handleTokenEnd, appendInput,    handleTokenEnd,         handleTokenEnd,     handleTokenEnd, handleTokenEnd},
-{ handleTokenEnd,   handleTokenEnd, handleTokenEnd, handleTokenEnd,         handleTokenEnd,     handleTokenEnd, handleTokenEnd},
-{ handleError,      handleError,    handleError,    handleError,            handleError,        handleError,    handleError}
+        {       appendInput,    appendInput,    appendInput,    handleDelimiterInit,    handleCommentInit,  handleError,    handleStrLit },
+        {       ignoreInput,    ignoreInput,    ignoreInput,    handleCommentDelimiter, ignoreInput,        ignoreInput,    ignoreInput },
+        {       appendInput,    handleTokenEnd, handleTokenEnd, handleTokenEnd,         handleTokenEnd,     appendInput,    handleError },
+        {       appendInput,    handleTokenEnd, handleTokenEnd, handleTokenEnd,         handleTokenEnd,     handleError,    handleError },
+        {       handleStrLit,   handleStrLit,   handleStrLit,   handleStrLit,           handleStrLit,       handleStrLit,   handleStrLit},
+        {       appendInput,    appendInput,    handleTokenEnd, handleTokenEnd,         handleTokenEnd,     handleError,    handleError },
+        {       handleTokenEnd, handleTokenEnd, appendInput,    handleTokenEnd,         handleTokenEnd,     handleTokenEnd, handleTokenEnd},
+        {       handleTokenEnd, handleTokenEnd, handleTokenEnd, handleTokenEnd,         handleTokenEnd,     handleTokenEnd, handleTokenEnd},
+        {       handleError,    handleError,    handleError,    handleError,            handleError,        handleError,    handleError}
 };
 
 InputClass classifyInputClass(char c) {
@@ -123,7 +122,7 @@ InputClass classifyInputClass(char c) {
         return IN_DIGIT;
     else if(isAlpha(c))
         return IN_APLHA;
-    else if(isOperator(c))
+    else if(isCharOperator(c))
         return IN_OPERATOR;
     else if(isDelimiter(c))
         return IN_DELIMITER;
@@ -143,6 +142,7 @@ Token* buildToken(LexStateData* lsd) {
         if(isReserverdWord(lsd->buffer)){
             return newToken(CLASS_RESERVED_WORD, lsd->buffer);
         }else{
+            // TODO: Symbols Table
             return newToken(CLASS_IDENTIFIER, lsd->buffer);
         }
     case ST_DELIMITER:
@@ -154,13 +154,9 @@ Token* buildToken(LexStateData* lsd) {
     case ST_STR_LIT:
         return newToken(CLASS_STRING_LIT, lsd->buffer);
     case ST_OPERATOR:
-        if(lsd->bufferIndex == 1){
-            return newToken(CLASS_SINGLE_OPERATOR, lsd->buffer);
-        } else {
-            if(!isComparisonOperator(lsd->buffer))
-                return NULL;
-            return newToken(CLASS_DOUBLE_OPERATOR, lsd->buffer);
-        }
+        if(!isStrOperator(lsd->buffer))
+            return NULL;
+        return newToken(CLASS_OPERATOR, lsd->buffer);
     default:
         return NULL;
     }

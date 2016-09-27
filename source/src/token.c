@@ -17,10 +17,8 @@ const char* classToString(const TokenClass c)
         return "Palavra Reservada";
     case CLASS_IDENTIFIER:
         return "Identificador    ";
-    case CLASS_SINGLE_OPERATOR:
+    case CLASS_OPERATOR:
         return "Operador         ";
-    case CLASS_DOUBLE_OPERATOR:
-        return "Comparador       ";
     case CLASS_DELIMITER:
         return "Delimitador      ";
     default:
@@ -35,7 +33,7 @@ void printToken(const Token* t)
         printf("Valor do Token: %d\n", t->value.intValue);
     } else if(t->class == CLASS_FLOAT) {
         printf("Valor do Token: %f\n", t->value.floatValue);
-    } else if(t->class == CLASS_DELIMITER || t->class == CLASS_SINGLE_OPERATOR) {
+    } else if(t->class == CLASS_DELIMITER) {
         printf("Valor do Token: %c\n", t->value.charValue);
     } else {
         printf("Valor do Token: %s\n", t->value.stringValue);
@@ -56,7 +54,7 @@ Token* newToken(TokenClass class, void* data)
         token->value.intValue = strtol(data, NULL, 10);
     }else if(class == CLASS_FLOAT){
         token->value.floatValue = strtof(data, NULL);
-    }else if(class == CLASS_DELIMITER || class == CLASS_SINGLE_OPERATOR){
+    }else if(class == CLASS_DELIMITER){
         token->value.charValue = *((char *) data);
     }else {
         newString = malloc(strlen(data) + 1);
@@ -78,7 +76,7 @@ void freeToken(Token** t)
         return;
     
     if(token->class == CLASS_STRING_LIT || token->class == CLASS_RESERVED_WORD || 
-        token->class == CLASS_IDENTIFIER || token->class == CLASS_DOUBLE_OPERATOR)
+        token->class == CLASS_IDENTIFIER || token->class == CLASS_OPERATOR)
         free(token->value.stringValue);
     
     free(token);
