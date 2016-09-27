@@ -8,21 +8,21 @@ const char* classToString(const TokenClass c)
 {
     switch(c) {
     case CLASS_INT:
-        return "Inteiro          ";
+        return "Inteiro            ";
     case CLASS_FLOAT:
-        return "Decimal          ";
+        return "Decimal            ";
     case CLASS_STRING_LIT:
-        return "String Literal   ";
-    case CLASS_RESERVED_WORD:
-        return "Palavra Reservada";
+        return "String Literal     ";
     case CLASS_IDENTIFIER:
-        return "Identificador    ";
+        return "Identificador      ";
+    case CLASS_RESERVED_WORD:
+        return "Palavra Reservada: ";
     case CLASS_OPERATOR:
-        return "Operador         ";
+        return "Operador           ";
     case CLASS_DELIMITER:
-        return "Delimitador      ";
+        return "Delimitador        ";
     default:
-        return "UNDEFINED        ";
+        return "UNDEFINED          ";
     }
 }
 
@@ -75,8 +75,8 @@ void freeToken(Token** t)
     if(t == NULL || token == NULL)
         return;
     
-    if(token->class == CLASS_STRING_LIT || token->class == CLASS_RESERVED_WORD || 
-        token->class == CLASS_IDENTIFIER || token->class == CLASS_OPERATOR)
+    if(token->class == CLASS_STRING_LIT || token->class == CLASS_IDENTIFIER ||
+        token->class == CLASS_RESERVED_WORD || token->class == CLASS_OPERATOR)
         free(token->value.stringValue);
     
     free(token);

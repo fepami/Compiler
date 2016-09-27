@@ -3,4 +3,4 @@ project(Compiler)
 
 enable_testing()
 
-subdirs(source)
+add_subdirectory(source)

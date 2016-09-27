@@ -28,20 +28,23 @@ static void firstTokenTest(void **state) {
 
 static void allTokenTest(void **state) {
     (void) state; /* unused */
+    int count = 0;
     int ret = -1;
     Token* token = NULL;
     FILE *fp = fopen (TEST_FILE_PATH , "r");
     assert_non_null(fp);
     
     while(1){
-        ret = nextToken(fp, &token);
-        if(ret == 0)
+        if((ret = nextToken(fp, &token)) == 0)
             break;
         assert_int_equal(ret, 1);
         assert_non_null(token);
 //         printToken(token);
         freeToken(&token);
+        count++;
     }
+    
+    assert_int_equal(count, 50);
     fclose(fp);
 }
 

@@ -20,13 +20,15 @@ typedef enum {
 } LexState;
 
 typedef enum {
-    IN_DIGIT, // 0..9
-    IN_APLHA, //A-Za-z
-    IN_OPERATOR, // '=', '>', '<', '!', '+', '-', '*', '/'
-    IN_DELIMITER, // '{', '}', '[', ']', ',', ';', ' ', '\t'
-    IN_COMMENT_BEGIN, // #
-    IN_DOT, // . -> only used for float numbers
-    IN_STRING_QUOTE, // '"'
+    IN_DIGIT,
+    IN_APLHA,
+    IN_OPERATOR, 
+    IN_STRICT_DELIMITER,
+    IN_SPACE_DELIMITER,
+    IN_NEW_LINE_DELIMITER,
+    IN_COMMENT_BEGIN,
+    IN_DOT,
+    IN_STRING_QUOTE,
     IN_CLASS_SIZE
 } InputClass;
 

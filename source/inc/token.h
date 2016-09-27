@@ -2,13 +2,13 @@
 #define TOKEN_H
 
 typedef enum {
-    CLASS_INT, // int number
-    CLASS_FLOAT, // float number
-    CLASS_STRING_LIT, // literal string
-    CLASS_RESERVED_WORD, // if, while, int, ...
-    CLASS_IDENTIFIER, // variable name
-    CLASS_OPERATOR, // '=', '>', '<', '!', '+', '-', '*', '/', "==", ">=", "<=", "!="
-    CLASS_DELIMITER, //  '{', '}', '[', ']', ',', ';', ' ', '\t'
+    CLASS_INT,
+    CLASS_FLOAT,
+    CLASS_STRING_LIT,
+    CLASS_IDENTIFIER,
+    CLASS_RESERVED_WORD,
+    CLASS_OPERATOR,
+    CLASS_DELIMITER, 
 } TokenClass;
 
 typedef struct Token {

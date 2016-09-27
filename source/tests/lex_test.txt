@@ -7,7 +7,7 @@ int func(int integer) {
 	float b;
 	b = 0.5;
 	if(a == b){
-        return a;
+            return a;
 	}
 	write(z, integer);
 	return integer;

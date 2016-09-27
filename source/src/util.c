@@ -5,19 +5,26 @@
 const char CHAR_OPERATORS[] = {
     '=', '>', '<', '!', '+', '-', '*', '/', '^', '&', '|' 
 };
-const char DELIMITERS[] = {
-    '{', '}', '[', ']', '(', ')', ',', ';', ' ', '\n', '\t'
+const char STRICT_DELIMITERS[] = {
+    '{', '}', '[', ']', '(', ')', ',', ';'
+};
+const char SPACE_DELIMITERS[] = {
+    ' ', '\t'
+};
+const char NEW_LINE_DELIMITERS[] = {
+    '\n', '\r'
 };
 const char COMENTARY = '#';
 const char DOT = '.';
 const char STRING_QUOTE = '"';
-const char* RESERVERD_WORDS[] = {
-    "if", "else", "while", "int", "float", "string",
-    "return", "const", "break", "continue", "read", "write"
-};
 const char* OPERATORS[] = {
     "=", ">", "<", "!", "+", "-", "*", "/", "^", "&", "|",
     "==", ">=", "<=", "!=", "&&", "||"
+};
+
+const char* RESERVED_WORDS[] = {
+    "int", "float", "string", "function", "if", "else", 
+    "while", "return", "const", "break", "continue"
 };
 
 int isInCharArray(const char array[], const unsigned arraySize, const char c) {
@@ -50,11 +57,23 @@ int isCharOperator(char c) {
     return isInCharArray(CHAR_OPERATORS, sizeof(CHAR_OPERATORS)/sizeof(char), c);
 }
 
-int isDelimiter(char c) {
-    return isInCharArray(DELIMITERS, sizeof(DELIMITERS)/sizeof(char), c);
+int isStrictDelimiter(char c) {
+    return isInCharArray(STRICT_DELIMITERS, sizeof(STRICT_DELIMITERS)/sizeof(char), c);
 }
 
-int isCommentBegin(char c) {
+int isSpaceDelimiter(char c) {
+    return isInCharArray(SPACE_DELIMITERS, sizeof(SPACE_DELIMITERS)/sizeof(char), c);
+}
+
+int isNewLineDelimiter(char c) {
+    return isInCharArray(NEW_LINE_DELIMITERS, sizeof(NEW_LINE_DELIMITERS)/sizeof(char), c);
+}
+
+int isDelimiter(char c) {
+    return isStrictDelimiter(c) || isSpaceDelimiter(c) || isNewLineDelimiter(c);
+}
+
+int isComment(char c) {
     return c == COMENTARY;
 }
 
@@ -66,11 +85,10 @@ int isStringQuote(char c) {
     return c == STRING_QUOTE;
 }
 
-int isReserverdWord(const char* c) {
-    return isInCharPtrArray(RESERVERD_WORDS, sizeof(RESERVERD_WORDS)/sizeof(const char *), c);
-}
-
 int isStrOperator(const char* c) {
     return isInCharPtrArray(OPERATORS, sizeof(OPERATORS)/sizeof(const char *), c);
 }
 
+int isReservedWord(const char* c) {
+    return isInCharPtrArray(RESERVED_WORDS, sizeof(RESERVED_WORDS)/sizeof(const char *), c);
+}

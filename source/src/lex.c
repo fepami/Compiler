@@ -9,113 +9,71 @@
 LexStateData lexStateData;
 
 /*
- *              DIGIT           APLHA           OPERATOR        DELIMITER       COMM_INIT       DOT             STRING_QUOTE
+ *              DIGIT           APLHA           OPERATOR        S_DELIMITER     SP_DELIMITER 	NL_DELIMITER	COMM_INIT       DOT             STRING_QUOTE
  *  INIT
  *  COMMENT
- *  N_INT
+ *  INT
  *  FLOAT
  *  STRING_LIT
  *  ALPHAN
  *  OP
  *  DELIM
  *  LEX_ERROR
- *              DIGIT           APLHA           OPERATOR        DELIMITER       COMM_INIT       DOT             STRING_QUOTE
+ *              DIGIT           APLHA           OPERATOR        S_DELIMITER	SP_DELIMITER 	NL_DELIMITER	COMM_INIT       DOT             STRING_QUOTE
  */
 const LexState nextState[STATES_SIZE][IN_CLASS_SIZE] = {
-        {       ST_NUM_INT,     ST_APLHANUM,    ST_OPERATOR,    ST_DELIMITER,   ST_COMMENT,     ST_LEX_ERROR,   ST_STR_LIT      },
-        {       ST_COMMENT,     ST_COMMENT,     ST_COMMENT,     ST_COMMENT,     ST_COMMENT,     ST_COMMENT,     ST_COMMENT      },
-        {       ST_NUM_INT,     ST_TOKEN_END,   ST_TOKEN_END,   ST_TOKEN_END,   ST_TOKEN_END,   ST_NUM_FLOAT,   ST_TOKEN_END    },
-        {       ST_NUM_FLOAT,   ST_TOKEN_END,   ST_TOKEN_END,   ST_TOKEN_END,   ST_TOKEN_END,   ST_LEX_ERROR,   ST_LEX_ERROR    },
-        {       ST_STR_LIT,     ST_STR_LIT,     ST_STR_LIT,     ST_STR_LIT,     ST_STR_LIT,     ST_STR_LIT,     ST_TOKEN_END    },
-        {       ST_APLHANUM,    ST_APLHANUM,    ST_TOKEN_END,   ST_TOKEN_END,   ST_TOKEN_END,   ST_LEX_ERROR,   ST_LEX_ERROR    },
-        {       ST_TOKEN_END,   ST_TOKEN_END,   ST_OPERATOR,    ST_TOKEN_END,   ST_TOKEN_END,   ST_TOKEN_END,   ST_TOKEN_END    },
-        {       ST_TOKEN_END,   ST_TOKEN_END,   ST_TOKEN_END,   ST_TOKEN_END,   ST_TOKEN_END,   ST_TOKEN_END,   ST_TOKEN_END    },
-        {       ST_LEX_ERROR,   ST_LEX_ERROR,   ST_LEX_ERROR,   ST_LEX_ERROR,   ST_LEX_ERROR,   ST_LEX_ERROR,   ST_LEX_ERROR    }
+        {       ST_NUM_INT,     ST_APLHANUM,    ST_OPERATOR,    ST_DELIMITER,	ST_INIT,	ST_INIT,   	ST_COMMENT,     ST_LEX_ERROR,   ST_STR_LIT      },
+        {       ST_COMMENT,     ST_COMMENT,     ST_COMMENT,     ST_COMMENT,  	ST_COMMENT,  	ST_INIT,     	ST_COMMENT,     ST_COMMENT,     ST_COMMENT      },
+        {       ST_NUM_INT,     ST_TOKEN_END,   ST_TOKEN_END,   ST_TOKEN_END,	ST_TOKEN_END,	ST_TOKEN_END,   ST_TOKEN_END,   ST_NUM_FLOAT,   ST_TOKEN_END    },
+        {       ST_NUM_FLOAT,   ST_TOKEN_END,   ST_TOKEN_END,   ST_TOKEN_END,	ST_TOKEN_END,	ST_TOKEN_END,   ST_TOKEN_END,   ST_LEX_ERROR,   ST_LEX_ERROR    },
+        {       ST_STR_LIT,     ST_STR_LIT,     ST_STR_LIT,     ST_STR_LIT,  	ST_STR_LIT,  	ST_STR_LIT,     ST_STR_LIT,     ST_STR_LIT,     ST_TOKEN_END    },
+        {       ST_APLHANUM,    ST_APLHANUM,    ST_TOKEN_END,   ST_TOKEN_END,	ST_TOKEN_END,	ST_TOKEN_END,   ST_TOKEN_END,   ST_LEX_ERROR,   ST_LEX_ERROR    },
+        {       ST_TOKEN_END,   ST_TOKEN_END,   ST_OPERATOR,    ST_TOKEN_END,	ST_TOKEN_END,	ST_TOKEN_END,   ST_TOKEN_END,   ST_TOKEN_END,   ST_TOKEN_END    },
+        {       ST_TOKEN_END,   ST_TOKEN_END,   ST_TOKEN_END,   ST_TOKEN_END,	ST_TOKEN_END,	ST_TOKEN_END,   ST_TOKEN_END,   ST_TOKEN_END,   ST_TOKEN_END    },
+        {       ST_LEX_ERROR,   ST_LEX_ERROR,   ST_LEX_ERROR,   ST_LEX_ERROR,	ST_LEX_ERROR,	ST_LEX_ERROR,   ST_LEX_ERROR,   ST_LEX_ERROR,   ST_LEX_ERROR    }
 };
-
-
-void addToBuffer(LexStateData* lsd){
-    lsd->buffer[lsd->bufferIndex] = lsd->currentInput;
-    lsd->bufferIndex++;
-    lsd->buffer[lsd->bufferIndex] = '\0';
-}
 
 void changeCurrentState(LexStateData* lsd, LexState nState){
     lsd->lastState = lsd->currentState;
     lsd->currentState = nState;
 }
 
-void appendInput(LexStateData* lsd) {
-    addToBuffer(lsd);
+int addToBuffer(LexStateData* lsd){
+    lsd->buffer[lsd->bufferIndex] = lsd->currentInput;
+    lsd->bufferIndex++;
+    lsd->buffer[lsd->bufferIndex] = '\0';
+    return 1;
+}
+
+int endToken(LexStateData* lsd) {
+    if(lsd->lastState != ST_STR_LIT) // Última  '"' deve ser ignorada 
+	ungetc(lsd->currentInput, lsd->filePtr);
+    return 1;
+}
+
+int ignoreInput(){
+    return 1;
+}
+
+int error() {
+    printf("[ERROR] Could not create Token - Lexical error\n");
+    return 0;
+}
+
+int doStateChange(LexStateData* lsd) {
     changeCurrentState(lsd, nextState[lsd->currentState][lsd->inputClass]);
-}
-
-void handleDelimiterInit(LexStateData* lsd) {
-    if((lsd->currentInput == ' ' || lsd->currentInput == '\t' || lsd->currentInput == '\n')) {
-        changeCurrentState(lsd, ST_INIT);
-    } else{
-        appendInput(lsd);
+    
+    if(lsd->currentState == ST_INIT || lsd->currentState == ST_COMMENT ||
+	    (lsd->currentState == ST_STR_LIT && lsd->lastState != ST_STR_LIT)){ //Primeira '"' deve ser ignorada
+	return ignoreInput();
+    }else if(lsd->currentState == ST_TOKEN_END){
+	return endToken(lsd);
+    }else if(lsd->currentState == ST_LEX_ERROR){
+	return error();
+    }else{
+	return addToBuffer(lsd);
     }
 }
-
-void ignoreInput(LexStateData* lsd) {
-    (void) lsd; /* unused */
-}
-
-void handleCommentInit(LexStateData* lsd) {
-    changeCurrentState(lsd, ST_COMMENT);
-}
-
-void handleCommentDelimiter(LexStateData* lsd) {
-    if(lsd->currentInput == '\n')
-        changeCurrentState(lsd, ST_INIT);
-}
-
-void handleTokenEnd(LexStateData* lsd) {
-    ungetc(lsd->currentInput, lsd->filePtr);
-    changeCurrentState(lsd, ST_TOKEN_END);
-}
-
-void handleStrLit(LexStateData* lsd) {
-    if(lsd->currentInput == '"' && lsd->currentState == ST_INIT) {
-        changeCurrentState(lsd, ST_STR_LIT);
-    } else if(lsd->currentInput == '"' && lsd->currentState == ST_STR_LIT){
-        changeCurrentState(lsd, ST_TOKEN_END);
-    } else if(lsd->currentInput != '"') {
-        addToBuffer(lsd);
-    }
-}
-
-void handleError(LexStateData* lsd) {
-    (void) lsd;
-    printf(">>ERROR: BUILD FAILED!\n");
-    exit(1);
-}
-
-/*
- *              DIGIT           APLHA           OPERATOR        DELIMITER               COMM_INIT           DOT             STRING_QUOTE
- *  INIT
- *  COMMENT
- *  N_INT
- *  FLOAT
- *  STR_LIT
- *  ALPHAN
- *  OP
- *  DELIM
- *  LEX_ERROR
- *              DIGIT           APLHA           OPERATOR        DELIMITER               COMM_INIT           DOT             STRING_QUOTE
- */
-void (* stateFunction[STATES_SIZE][IN_CLASS_SIZE]) (LexStateData* lsd) = {
-        {       appendInput,    appendInput,    appendInput,    handleDelimiterInit,    handleCommentInit,  handleError,    handleStrLit },
-        {       ignoreInput,    ignoreInput,    ignoreInput,    handleCommentDelimiter, ignoreInput,        ignoreInput,    ignoreInput },
-        {       appendInput,    handleTokenEnd, handleTokenEnd, handleTokenEnd,         handleTokenEnd,     appendInput,    handleError },
-        {       appendInput,    handleTokenEnd, handleTokenEnd, handleTokenEnd,         handleTokenEnd,     handleError,    handleError },
-        {       handleStrLit,   handleStrLit,   handleStrLit,   handleStrLit,           handleStrLit,       handleStrLit,   handleStrLit},
-        {       appendInput,    appendInput,    handleTokenEnd, handleTokenEnd,         handleTokenEnd,     handleError,    handleError },
-        {       handleTokenEnd, handleTokenEnd, appendInput,    handleTokenEnd,         handleTokenEnd,     handleTokenEnd, handleTokenEnd},
-        {       handleTokenEnd, handleTokenEnd, handleTokenEnd, handleTokenEnd,         handleTokenEnd,     handleTokenEnd, handleTokenEnd},
-        {       handleError,    handleError,    handleError,    handleError,            handleError,        handleError,    handleError}
-};
 
 InputClass classifyInputClass(char c) {
     if(isDigit(c))
@@ -124,9 +82,13 @@ InputClass classifyInputClass(char c) {
         return IN_APLHA;
     else if(isCharOperator(c))
         return IN_OPERATOR;
-    else if(isDelimiter(c))
-        return IN_DELIMITER;
-    else if(isCommentBegin(c))
+    else if(isStrictDelimiter(c))
+        return IN_STRICT_DELIMITER;
+    else if(isSpaceDelimiter(c))
+        return IN_SPACE_DELIMITER;
+    else if(isNewLineDelimiter(c))
+        return IN_NEW_LINE_DELIMITER;   
+    else if(isComment(c))
         return IN_COMMENT_BEGIN;
     else if(isDot(c))
         return IN_DOT;
@@ -139,7 +101,7 @@ InputClass classifyInputClass(char c) {
 Token* buildToken(LexStateData* lsd) {
     switch(lsd->lastState) {
     case ST_APLHANUM:
-        if(isReserverdWord(lsd->buffer)){
+        if(isReservedWord(lsd->buffer)){
             return newToken(CLASS_RESERVED_WORD, lsd->buffer);
         }else{
             // TODO: Symbols Table
@@ -170,18 +132,22 @@ int nextToken(FILE* file_ptr, Token** token){
         lexStateData.currentInput = getc(file_ptr);
         if(lexStateData.currentInput == EOF)
             break;
-		lexStateData.inputClass = classifyInputClass(lexStateData.currentInput);
-		stateFunction[lexStateData.currentState][lexStateData.inputClass](&lexStateData);
-	} while(lexStateData.currentState != ST_TOKEN_END);
+	
+	lexStateData.inputClass = classifyInputClass(lexStateData.currentInput);
+	if(!doStateChange(&lexStateData)){
+	    *token = NULL;
+	    return -1;
+	}
+    } while(lexStateData.currentState != ST_TOKEN_END);
 
-	if(lexStateData.bufferIndex == 0){
+    if(lexStateData.bufferIndex == 0){
         *token = NULL;
         return 0;
     }
     
     *token = buildToken(&lexStateData);
     if(*token == NULL){
-        fprintf(stderr, "[ERROR] Could not create Token - Unknown error\n");
+        printf("[ERROR] Could not create Token - Unknown error\n");
         return -1;
     }
     
