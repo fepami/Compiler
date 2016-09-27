@@ -1,0 +1,16 @@
+
+int func(int integer) {
+	string z;
+	z = "literal example";
+	int a;
+	a = 10;
+	float b;
+	b = 0.5;
+	if(a == b){
+        return a;
+	}
+	write(z, integer);
+	return integer;
+}
+
+#comentario bla bla 
