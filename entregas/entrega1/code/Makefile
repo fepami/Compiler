@@ -10,7 +10,7 @@ lex: $(OBJ)
 		gcc -o $@ $^ $(CFLAGS)
 
 test: lex
-		./lex lex_test.txt
+		./lex ../ENTRADA.txt
 
 .PHONY: clean
 clean:
