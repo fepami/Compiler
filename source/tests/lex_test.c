@@ -19,9 +19,9 @@ static void firstTokenTest(void **state) {
 
     assert_int_equal(nextToken(fp, &firstToken), 1);
     assert_non_null(firstToken);
-    assert_int_equal(firstToken->class, CLASS_RESERVED_WORD);
+    assert_int_equal(firstToken->tokenClass, CLASS_RESERVED_WORD);
     assert_string_equal(firstToken->value.stringValue, "int");
-    
+
     freeToken(&firstToken);
     fclose(fp);
 }
@@ -33,7 +33,7 @@ static void allTokenTest(void **state) {
     Token* token = NULL;
     FILE *fp = fopen (TEST_FILE_PATH , "r");
     assert_non_null(fp);
-    
+
     while(1){
         if((ret = nextToken(fp, &token)) == 0)
             break;
@@ -43,7 +43,7 @@ static void allTokenTest(void **state) {
         freeToken(&token);
         count++;
     }
-    
+
     assert_int_equal(count, 50);
     fclose(fp);
 }

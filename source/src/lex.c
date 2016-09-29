@@ -6,8 +6,6 @@
 #include "token.h"
 #include "lex.h"
 
-LexStateData lexStateData;
-
 /*
  *              DIGIT           APLHA           OPERATOR        S_DELIMITER     SP_DELIMITER 	NL_DELIMITER	COMM_INIT       DOT             STRING_QUOTE
  *  INIT
@@ -125,6 +123,7 @@ Token* buildToken(LexStateData* lsd) {
 }
 
 int nextToken(FILE* file_ptr, Token** token){
+    LexStateData lexStateData;
     memset(&lexStateData, 0, sizeof(LexStateData));
     lexStateData.filePtr = file_ptr;
     

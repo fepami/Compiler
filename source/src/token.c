@@ -28,33 +28,33 @@ const char* classToString(const TokenClass c)
 
 void printToken(const Token* t)
 {
-    printf("Classe do Token: %s\t", classToString(t->class));
-    if(t->class == CLASS_INT) {
+    printf("Classe do Token: %s\t", classToString(t->tokenClass));
+    if(t->tokenClass == CLASS_INT) {
         printf("Valor do Token: %d\n", t->value.intValue);
-    } else if(t->class == CLASS_FLOAT) {
+    } else if(t->tokenClass == CLASS_FLOAT) {
         printf("Valor do Token: %f\n", t->value.floatValue);
-    } else if(t->class == CLASS_DELIMITER) {
+    } else if(t->tokenClass == CLASS_DELIMITER) {
         printf("Valor do Token: %c\n", t->value.charValue);
     } else {
         printf("Valor do Token: %s\n", t->value.stringValue);
     }
 }
 
-Token* newToken(TokenClass class, void* data)
+Token* newToken(TokenClass tokenClass, void* data)
 {
     char* newString;
     Token* token = (Token *) malloc(sizeof(Token));
     memset(token, 0, sizeof(Token));
-    
-    if (token == NULL) 
+
+    if (token == NULL)
         return NULL;
-    
-    token->class = class;
-    if(class == CLASS_INT){
+
+    token->tokenClass = tokenClass;
+    if(tokenClass == CLASS_INT){
         token->value.intValue = strtol(data, NULL, 10);
-    }else if(class == CLASS_FLOAT){
+    }else if(tokenClass == CLASS_FLOAT){
         token->value.floatValue = strtof(data, NULL);
-    }else if(class == CLASS_DELIMITER){
+    }else if(tokenClass == CLASS_DELIMITER){
         token->value.charValue = *((char *) data);
     }else {
         newString = malloc(strlen(data) + 1);
@@ -65,7 +65,7 @@ Token* newToken(TokenClass class, void* data)
         strcpy(newString, data);
         token->value.stringValue = newString;
     }
-    
+
     return token;
 }
 
@@ -74,10 +74,10 @@ void freeToken(Token** t)
     Token* token = *t;
     if(t == NULL || token == NULL)
         return;
-    
-    if(token->class == CLASS_STRING_LIT || token->class == CLASS_IDENTIFIER ||
-        token->class == CLASS_RESERVED_WORD || token->class == CLASS_OPERATOR)
+
+    if(token->tokenClass == CLASS_STRING_LIT || token->tokenClass == CLASS_IDENTIFIER ||
+        token->tokenClass == CLASS_RESERVED_WORD || token->tokenClass == CLASS_OPERATOR)
         free(token->value.stringValue);
-    
+
     free(token);
 }

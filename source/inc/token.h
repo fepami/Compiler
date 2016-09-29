@@ -8,7 +8,7 @@ typedef enum {
     CLASS_IDENTIFIER,
     CLASS_RESERVED_WORD,
     CLASS_OPERATOR,
-    CLASS_DELIMITER, 
+    CLASS_DELIMITER,
 } TokenClass;
 
 typedef struct Token {
@@ -18,11 +18,11 @@ typedef struct Token {
         char charValue;
         char* stringValue;
     } value;
-    TokenClass class;
+    TokenClass tokenClass;
 } Token;
 
 void printToken(const Token* t);
-Token* newToken(TokenClass class, void* data);
+Token* newToken(TokenClass tokenClass, void* data);
 void freeToken(Token** t);
 
 #endif // TOKEN_H
