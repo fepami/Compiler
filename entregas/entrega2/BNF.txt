@@ -1,0 +1,88 @@
+<OPERADOR> 			::= 	"+" | "-" | "/" | "*"
+<OPERADORBOOL>		::= 	"&" | "|" | "^"
+<OPERADORCOMP>		::= 	"<" | "<=" | ">" | ">=" | "==" | "!=" | "&&" | "||" 
+<OPERADORDECIMAL> 	::= 	<OPERADOR | OPERADORBOOL>
+
+<DIGITO> 			::= 	"0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"  
+<LETRA> 			::= 	"A" | "B" | ... | "Y" | "Z" 
+<BOOL>				::= 	"true" | "false"
+					|		"a" | "b" | ... | "y" | "z" 
+<EOL> 				::= 	"\n" | "\r" 
+<SIMBOLO> 			::= 	"!" |  "@" |  "$" | "_"| " " | "\t" | <OPERADOR> | <OPERADORBOOL> | <OPERADORCOMP>
+
+<DECIMAL>			::= 	<INTEIRO> | "+" <INTEIRO> | "-" <INTEIRO>
+<INTEIRO>			::= 	<DIGITO> | <INTEIRO> <DIGITO>
+
+<FLOAT>				::= 	<FLOATSEMSINAL> | "+" <FLOATSEMSINAL> | "-" <FLOATSEMSINAL>
+<FLOATSEMSINAL> 	::= 	<INTEIRO> "." <INTEIRO>
+
+<STRING>			::= 	""" <STRINGLITERAL> """
+<STRINGLITERAL> 	::=		<STRINGLETRA> | <STRINGLITERAL> <STRINGLETRA>
+<STRINGLETRA> 		::=		<LETRA> | <SIMBOLO> | <DIGITO> | <EOL>
+
+<TIPO> 				::= 	"int" | "float" | "bool" | "string" 
+<IDENTIFICADOR> 	::= 	<LETRA> | <IDENTIFICADOR> <LETRA>
+
+<PROGRAMA> 			::= 	"program" <ESCOPO>
+
+<COMENTARIO>		::= 	"#" <COMENTLITERAL> <EOL>
+<COMENTLITERAL> 	::=		"" | <COMENTLITERAL> <COMENTLETRA>
+<COMENTLETRA> 		::=		<LETRA> | <SIMBOLO> | <DIGITO>
+
+<DEFINICAO>			::= 	"deftype" <IDENTIFICADOR> "{" <PARAMETROS> "}" ";"
+<PARAMETROS> 		::= 	<PARAMETRO> | <PARAMETRO> "," <PARAMETROS>
+<PARAMETRO> 		::= 	<TIPO> <IDENTIFICADOR>
+
+<FUNCAO>			::=		"function" <IDENTIFICADOR> "(" <PARAMETROS> ")" ESCOPO
+					|		"function" <IDENTIFICADOR> "(" <PARAMETROS> ")" "->" TIPO ESCOPO
+
+<ESCOPO>			::= 	"{" <COMANDOS> "}"
+<COMANDOS>			::= 	<COMANDO> | <COMANDOS> <COMANDO>
+
+<VARIAVEL> 			::= 	<VARPREFIXO> <TIPO> 					<IDENTIFICADOR> ":=" <EXPRESSAO> ";"
+					| 		<VARPREFIXO> <TIPO> 					<IDENTIFICADORES> ";"
+					| 		<VARPREFIXO> <TIPO> "[" <INTEIRO> "]	<IDENTIFICADORES> ";"
+					| 		<VARPREFIXO> <TIPO> "[" "]"  			<IDENTIFICADOR> ":=" "{" <EXPRESSOES> "}" ";"
+<EXPRESSOES> 		::=		<EXPRESSAO> | <EXPRESSAO> "," <EXPRESSOES>
+<IDENTIFICADORES>	::= 	<IDENTIFICADOR> | <IDENTIFICADOR> "," <IDENTIFICADORES>
+<VARPREFIXO> 		::= 	"var" | "persistent" | "const"
+
+<CONDICIONAL> 		::= 	"if" "(" <EXPRESSAO> ")" <ESCOPO>
+					| 		"if" "(" <EXPRESSAO> ")" <ESCOPO> <ELSEIFS> "else" <ESCOPO> 
+<ELSEIFS>			::= 	"" | "else if" "(" <EXPRESSAO> ")" <ESCOPO>
+
+<REPETICAO> 		::=		"while" "(" <EXPRESSAO> ")" <ESCOPO>
+
+<ATRIBUICAO> 		::=		<IDENTIFICADOR> ":=" <EXPRESSAO> ";"
+
+<CHAMADA>			::= 	<IDENTIFICADOR> "(" <OPTEXPRESSOES> ")" ";"
+<OPTEXPRESSOES>		::= 	"" | <EXPRESSOES>
+
+<RETORNO> 			::= 	"return" <EXPRESSAO> ";"
+
+<COMANDO> 			::= 	<ATRIBUICAO>
+					|		<RETORNO>
+					|		<VARIAVEL>
+					|		<CONDICIONAL>
+					|		<REPETICAO>
+
+<EXPRESSAO> 		::= 	<IDENTIFICADOR>
+					| 		<CHAMADA> 
+					| 		<CONTADECIMAL>
+					|		<CONTAFLOAT>
+					|		<CONTABOOL>
+					|		<STRING>
+
+<CONTADECIMAL>		::= 	<DECIMAL> 
+					| 		<IDENTIFICADOR>
+					| 		<CONTADECIMAL> <OPERADORDECIMAL> <CONTADECIMAL>
+					| 		"(" <CONTADECIMAL> <OPERADORDECIMAL> <CONTADECIMAL> ")"
+<CONTAFLOAT>		::= 	<FLOAT> 
+					| 		<IDENTIFICADOR>
+					| 		<CONTAFLOAT> <OPERADOR> <CONTAFLOAT>
+					| 		"(" <CONTAFLOAT> <OPERADOR> <CONTAFLOAT> ")"
+<CONTABOOL>			::= 	<BOOL> 
+					| 		<IDENTIFICADOR>
+					| 		<"!" CONTABOOL>
+					| 		<CONTABOOL> <OPERADORCOMP> <CONTABOOL>
+					| 		"(" <CONTABOOL> <OPERADORCOMP> <CONTABOOL> ")"
