@@ -1,0 +1,42 @@
+OPERADOR 		= 	"+" | "-" | "/" | "*" .
+OPERADORBOOL	= 	"&" | "|" | "^".
+OPERADORCOMP	= 	"<" | "<=" | ">" | ">=" | "==" | "!=" | "&&" | "||" .
+DIGITO 			= 	"0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" . 
+LETRA 			= 	"A" | "B" | "C" | "D" | "E" | "F" | "G" | "H" | "I" | "J" | "K" | "L" | "M" | "N" | "O" | "P" | "Q" | "R" | "S" | "T" | "U" | "V" | "W" | "X" | "Y" | "Z" | "a" | "b" | "c" | "d" | "e" | "f" | "g" | "h" | "i" | "j" | "k" | "l" | "m" | "n" | "o" | "p" | "q" | "r" | "s" | "t" | "u" | "v" | "w" | "x" | "y" | "z" .
+
+EOL 			= 	"\n" | "\r" .
+SIMBOLO 		= 	"!" |  "@" |  "$" | "_" | " " | "\t" | OPERADOR | OPERADORBOOL | OPERADORCOMP .
+
+BOOL			= 	"true" | "false" .
+INTEIRO 		= 	DIGITO { DIGITO } .
+DECIMAL			= 	[ "+" | "-" ] INTEIRO .
+FLOAT			= 	[ "+" | "-" ] INTEIRO "." INTEIRO .
+STRING			= 	""" {LETRA | SIMBOLO | DIGITO | EOL} """ .
+
+TIPO 			= 	"int" | "float" | "bool" | "string" . 
+IDENTIFICADOR 	= 	LETRA { LETRA } .
+
+PROGRAMA 		= 	"program" ESCOPO .
+
+COMENTARIO 		= 	"#" {LETRA | SIMBOLO | DIGITO} EOL .
+DEFINICAO		= 	"deftype" IDENTIFICADOR "{" {TIPO IDENTIFICADOR ","} TIPO IDENTIFICADOR "}" ";" .
+FUNCAO			=	"function" IDENTIFICADOR "(" {TIPO IDENTIFICADOR ","} TIPO IDENTIFICADOR ")" ESCOPO | "function" IDENTIFICADOR "(" {TIPO IDENTIFICADOR ","} TIPO IDENTIFICADOR ")" "->" TIPO ESCOPO .
+
+ESCOPO			= 	"{" { COMANDO } "}" .
+
+VARIAVEL 		= 	("var" | "persistent" | "const") TIPO IDENTIFICADOR ":=" EXPRESSAO ";" | ("var" | "persistent" | "const") TIPO {IDENTIFICADOR ","} IDENTIFICADOR ";" | ("var" | "persistent" | "const") TIPO "[]" IDENTIFICADOR ":=" "{" {EXPRESSAO ","} EXPRESSAO "}" ";" | ("var" | "persistent" | "const") TIPO "[" INTEIRO "]" {IDENTIFICADOR ","} IDENTIFICADOR ";" . 
+
+CONDICIONAL 	= 	"if" "(" EXPRESSAO ")" ESCOPO | "if" "(" EXPRESSAO ")" ESCOPO { "else if" "(" EXPRESSAO ")" ESCOPO } "else" ESCOPO .
+REPETICAO 		=	"while" "(" EXPRESSAO ")" ESCOPO .
+ATRIBUICAO 		=	IDENTIFICADOR ":=" EXPRESSAO ";" .
+CHAMADA			= 	IDENTIFICADOR "(" [{EXPRESSAO ","} EXPRESSAO] ")" ";".	
+RETORNO 		= 	"return" EXPRESSAO ";" .
+
+COMANDO 		= 	ATRIBUICAO | RETORNO | VARIAVEL | CONDICIONAL | REPETICAO .
+
+EXPRESSAO 		= 	IDENTIFICADOR | CHAMADA  | CONTADECIMAL | CONTAFLOAT | CONTABOOL | STRING .
+
+CONTADECIMAL	= 	DECIMAL  | IDENTIFICADOR | CONTADECIMAL (OPERADOR | OPERADORBOOL) CONTADECIMAL | "(" CONTADECIMAL (OPERADOR | OPERADORBOOL) CONTADECIMAL ")" .
+
+CONTAFLOAT		= 	FLOAT  | IDENTIFICADOR | CONTAFLOAT OPERADOR CONTAFLOAT | "(" CONTAFLOAT OPERADOR CONTAFLOAT ")" .
+CONTABOOL		= 	BOOL  | IDENTIFICADOR | "!" CONTABOOL | CONTABOOL OPERADORCOMP CONTABOOL | "(" CONTABOOL OPERADORCOMP CONTABOOL ")" .
