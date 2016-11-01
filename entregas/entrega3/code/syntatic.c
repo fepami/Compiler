@@ -56,18 +56,6 @@ void pop(Stack* s) {
     state.getToken = 0;
 }
 
-void cleanUp(){
-    freeToken(&state.lastToken);
-    freeToken(&state.currentToken);
-    while(stack.size > 1){
-        stack.size--;
-        StackNode* aux = stack.top;
-        stack.top = stack.top->next;
-        free(aux);
-    }
-    free(stack.top);
-}
-
 int callSubMachine(SubMachine subMach, int retSt) {
     push(&stack, state.currentSubMachine, retSt);
     state.currentSubMachine = subMach;
@@ -81,8 +69,6 @@ int returnSubMachine(){
 
 int compile(FILE* fp) {
     int ret;
-    stack.size = 0;
-    stack.top = NULL;
     state.getToken = 1;
     state.currentSubMachineState = 0;
     state.currentSubMachine = 0;
@@ -103,13 +89,15 @@ int compile(FILE* fp) {
         state.currentSubMachineState= subMachines[state.currentSubMachine](state.currentToken);
         if(state.currentSubMachineState == -1) {
             printf("Erro de compilação!\n");
-            cleanUp();
+            freeToken(&state.lastToken);
+            freeToken(&state.currentToken);
             return 1;
         }
     }
 
     printf("Compilação completa!\n");
-    cleanUp();
+    freeToken(&state.lastToken);
+    freeToken(&state.currentToken);
     return 0;
 }
 

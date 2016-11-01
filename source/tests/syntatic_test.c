@@ -13,13 +13,10 @@
 
 static void allSyntaticTest(void **state) {
     (void) state; /* unused */
-    int count = 0;
-    int ret = -1;
-    Token* token = NULL;
     FILE *fp = fopen (TEST_FILE_PATH , "r");
     assert_non_null(fp);
 
-    assert_int_equal(analyze(fp), 0);
+    assert_int_equal(compile(fp), 0);
     
     fclose(fp);
 }
