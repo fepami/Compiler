@@ -5,32 +5,26 @@
     <initial/>
   </state>
   <state id="1" name="q1">
+    <final/>
   </state>
   <state id="2" name="q2">
   </state>
   <state id="3" name="q3">
-  </state>
-  <state id="4" name="q4">
     <final/>
   </state>
   <transition>
     <from>0</from>
     <to>1</to>
-    <read>IDENTIFICADOR</read>
+    <read>TERMOPRIMARIO</read>
   </transition>
   <transition>
     <from>1</from>
     <to>2</to>
-    <read>"="</read>
+    <read>OPERADORCOMP</read>
   </transition>
   <transition>
     <from>2</from>
     <to>3</to>
-    <read>EXPRESSAO</read>
-  </transition>
-  <transition>
-    <from>3</from>
-    <to>4</to>
-    <read>";"</read>
+    <read>TERMOCOMP</read>
   </transition>
 </structure>

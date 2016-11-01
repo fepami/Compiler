@@ -10,6 +10,7 @@
   <state id="2" name="q2">
   </state>
   <state id="3" name="q3">
+    <final/>
   </state>
   <state id="4" name="q4">
   </state>
@@ -19,11 +20,8 @@
   </state>
   <state id="7" name="q7">
   </state>
-  <transition>
-    <from>0</from>
-    <to>1</to>
-    <read>FLOAT</read>
-  </transition>
+  <state id="8" name="q8">
+  </state>
   <transition>
     <from>0</from>
     <to>1</to>
@@ -32,41 +30,71 @@
   <transition>
     <from>0</from>
     <to>2</to>
-    <read>CONTAFLOAT</read>
+    <read>"("</read>
   </transition>
   <transition>
     <from>0</from>
     <to>3</to>
+    <read>DECIMAL</read>
+  </transition>
+  <transition>
+    <from>0</from>
+    <to>3</to>
+    <read>FLOAT</read>
+  </transition>
+  <transition>
+    <from>0</from>
+    <to>3</to>
+    <read>BOOL</read>
+  </transition>
+  <transition>
+    <from>0</from>
+    <to>3</to>
+    <read>STRING</read>
+  </transition>
+  <transition>
+    <from>1</from>
+    <to>4</to>
     <read>"("</read>
   </transition>
   <transition>
     <from>2</from>
-    <to>6</to>
-    <read>OPERADOR</read>
-  </transition>
-  <transition>
-    <from>3</from>
-    <to>4</to>
-    <read>CONTAFLOAT</read>
+    <to>8</to>
+    <read>EXPRESSAO</read>
   </transition>
   <transition>
     <from>4</from>
     <to>5</to>
-    <read>OPERADOR</read>
+    <read>EXPRESSAO</read>
+  </transition>
+  <transition>
+    <from>4</from>
+    <to>6</to>
+    <read>")"</read>
   </transition>
   <transition>
     <from>5</from>
     <to>7</to>
-    <read>CONTAFLOAT</read>
+    <read>","</read>
+  </transition>
+  <transition>
+    <from>5</from>
+    <to>6</to>
+    <read>")"</read>
   </transition>
   <transition>
     <from>6</from>
-    <to>1</to>
-    <read>CONTAFLOAT</read>
+    <to>3</to>
+    <read>";"</read>
   </transition>
   <transition>
     <from>7</from>
-    <to>1</to>
+    <to>5</to>
+    <read>EXPRESSAO</read>
+  </transition>
+  <transition>
+    <from>8</from>
+    <to>3</to>
     <read>")"</read>
   </transition>
 </structure>

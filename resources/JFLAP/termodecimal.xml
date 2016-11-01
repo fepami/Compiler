@@ -5,6 +5,7 @@
     <initial/>
   </state>
   <state id="1" name="q1">
+    <final/>
   </state>
   <state id="2" name="q2">
   </state>
@@ -14,16 +15,16 @@
   <transition>
     <from>0</from>
     <to>1</to>
-    <read>"return"</read>
+    <read>TERMOBOOL</read>
   </transition>
   <transition>
     <from>1</from>
     <to>2</to>
-    <read>EXPRESSAO</read>
+    <read>OPERADORBOOL</read>
   </transition>
   <transition>
     <from>2</from>
     <to>3</to>
-    <read>";"</read>
+    <read>TERMODECIMAL</read>
   </transition>
 </structure>
