@@ -27,14 +27,20 @@ int (* const sub_machines[FSM_SIZE]) (Token* t) = {
     fsm_instruction,
     fsm_loop,
     fsm_cond,
+    fsm_retorno,
     fsm_return,
-    fsm_expr,
+    fsm_expressao,
+    fsm_chamada,
     fsm_term_and,
     fsm_term_equal,
     fsm_term_relacional,
     fsm_term_add,
     fsm_term_mult,
-    fsm_term_primary
+    fsm_term_primary,
+    fsm_contabool,
+    fsm_repeticao,
+    fsm_atribuicao,
+    fsm_condicional
 };
 
 /*
@@ -553,6 +559,139 @@ int fsm_cond(Token* t) {
     return -1;
 }
 
+int fsm_retorno(Token* t) {
+    switch(state.current_sub_machine_state) {
+        case 0:
+            if (t->tokenClass == CLASS_RESERVED_WORD && strcmp(t->value.stringValue, "return") == 0) {
+                semantic_tbd();
+                return 1;
+            }
+            break;
+        case 1:
+            semantic_tbd();
+            return call_sm(FSM_EXPRESSAO, 2);
+        case 2:
+            if (t->tokenClass == CLASS_DELIMITER && t->value.charValue == ';') {
+                semantic_tbd();
+                return 3;
+            }
+            break;
+        case 3:
+            // ESTADO FINAL
+            pop(&stack);
+            return state.current_sub_machine_state;
+    }
+    return -1;
+}
+
+int fsm_chamada(Token* t) {
+    switch(state.current_sub_machine_state) {
+        case 0:
+            semantic_tbd();
+            return call_sm(FSM_IDENTIFICADOR, 1);
+        case 1:
+            if (t->tokenClass == CLASS_DELIMITER && t->value.charValue == '(') {
+                semantic_tbd();
+                return 2;
+            }
+            break;
+        case 2:
+            if (t->tokenClass == CLASS_DELIMITER && t->value.charValue == ')') {
+                semantic_tbd();
+                return 4;
+            } else {
+                semantic_tbd();
+                return call_sm(FSM_EXPRESSAO, 3);
+            }
+        case 3:
+            if (t->tokenClass == CLASS_DELIMITER && t->value.charValue == ')') {
+                semantic_tbd();
+                return 4;
+            } else if (t->tokenClass == CLASS_DELIMITER && t->value.charValue == ',') {
+                semantic_tbd();
+                return 5;
+            }
+            break;
+        case 4:
+            if (t->tokenClass == CLASS_DELIMITER && t->value.charValue == ';') {
+                semantic_tbd();
+                return 6;
+            }
+            break;
+        case 5:
+            semantic_tbd();
+            return call_sm(FSM_EXPRESSAO, 3);
+            break;
+        case 6:
+            // Estado final
+            pop(&stack);
+            return state.current_sub_machine_state;
+    }
+    return -1;
+}
+
+int fsm_atribuicao(Token* t) {
+    switch(state.current_sub_machine_state) {
+        case 0:
+            semantic_tbd();
+            return call_sm(FSM_IDENTIFICADOR, 1);
+        case 1:
+            if (t->tokenClass == CLASS_OPERATOR && t->value.charValue == '=') {
+                semantic_tbd();
+                return 2;
+            }
+            break;
+        case 2:
+            semantic_tbd();
+            return call_sm(FSM_EXPRESSAO, 3);
+        case 3:
+            if (t->tokenClass == CLASS_DELIMITER && t->value.charValue == ';') {
+                semantic_tbd();
+                return 4;
+            }
+            break;
+        case 4:
+            // Estado final
+            pop(&stack);
+            return state.current_sub_machine_state;
+    }
+    return -1;
+}
+
+int fsm_repeticao(Token* t){
+    switch(state.current_sub_machine_state) {
+        case 0:
+            if (t->tokenClass == CLASS_RESERVED_WORD && strcmp(t->value.stringValue, "while") == 0){
+                semantic_tbd();
+                return 1;
+            }
+            break;
+        case 1:
+            if (t->tokenClass == CLASS_DELIMITER && t->value.charValue == '(') {
+                semantic_tbd();
+                return 2;
+            }
+            break;
+        case 2:
+            semantic_tbd();
+            return call_sm(FSM_EXPRESSAO, 3);
+        case 3:
+            if (t->tokenClass == CLASS_DELIMITER && t->value.charValue == ')') {
+                semantic_tbd();
+                return 4;
+            }
+            break;
+        case 4:
+            semantic_tbd();
+            return call_sm(FSM_ESCOPO, 5);
+        case 5:
+            // Estado final
+            pop(&stack);
+            return state.current_sub_machine_state;
+    }
+    return -1;
+}
+
 int fsm_return(Token* t) {
     switch(state.current_sub_machine_state) {
         case 0:
@@ -574,30 +713,18 @@ int fsm_return(Token* t) {
     return -1;
 }
 
-int fsm_expr(Token* t) {
+int fsm_expressao(Token* t) {
     switch(state.current_sub_machine_state) {
         case 0:
+            if (t->tokenClass == CLASS_IDENTIFIER || t->tokenClass == CLASS)
             semantic_tbd();
             return call_sm(FSM_TERM_AND, 1);
 
         case 1:
-            if((t->tokenClass == CLASS_OPERATOR && strcmp(t->value.stringValue, "|") == 0) ||
-                (t->tokenClass == CLASS_OPERATOR && strcmp(t->value.stringValue, "||") == 0)) {
-                semantic_tbd();
-                return 2;
-            }
-            //final state
+            // Estado final
             pop(&stack);
             return state.current_sub_machine_state;
 
-        case 2:
-            semantic_tbd();
-            return call_sm(FSM_EXPR, 3);
-
-        case 3:
-            //final state
-            pop(&stack);
-            return state.current_sub_machine_state;
     }
     return -1;
 }
@@ -810,5 +937,33 @@ int fsm_term_primary(Token* t) {
             semantic_tbd();
             return call_sm(FSM_EXPR, 6);
     }
+    return -1;
+}
+
+int fsm_contabool(Token *t) {
+    switch(state.current_sub_machine_state) {
+        case 0:
+            if ()
+            break;
+        case 1:
+            // Estado final
+            pop(&stack);
+            semantic_tbd();
+            return state.current_sub_machine_state;
+            break;
+        case 2:
+            break;
+        case 3:
+            break;
+        case 4:
+            break;
+        case 5:
+            break;
+        case 6:
+            break;
+        case 7:
+            break;
+    }
+
     return -1;
 }
