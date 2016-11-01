@@ -5,25 +5,18 @@
 #include "token.h"
 
 typedef enum {
-    FSM_PROGRAM,
-    FSM_VAR_DECLARATION,
-    FSM_INSTRUCTION,
-    FSM_LOOP,
-    FSM_COND,
-    FSM_RETURN,
-    FSM_RETORNO,
-    FSM_EXPRESSAO,
-    FSM_CHAMADA,
+    FSM_PROGRAMA,
+    FSM_DEFINICAO,
+    FSM_FUNCAO,
+    FSM_ESCOPO,
+    FSM_VARIAVEL,
+    FSM_CONDICIONAL,
     FSM_REPETICAO,
-    FSM_ATRIBUICAO,
-    FSM_TERM_AND,
-    FSM_TERM_EQUAL,
-    FSM_TERM_RELACIONAL,
-    FSM_TERM_ADD,
-    FSM_TERM_MULT,
-    FSM_TERM_PRIMARY,
-    FSM_SIZE,
-    FSM_CONTABOOL
+    FSM_COMANDO,
+    FSM_EXPRESSAO,
+    FSM_TERMODECIMAL,
+    FSM_TERMOCOMP,
+    FSM_TERMOPRIMARIO
 } sub_machine_t;
 
 /*
@@ -34,24 +27,17 @@ int analyze(FILE *fp);
 /*
  *      Internal state functions
  */
-int fsm_program(Token* t);
-int fsm_var_declaration(Token* t);
-int fsm_instruction(Token* t);
-int fsm_loop(Token* t);
-int fsm_cond(Token* t);
-int fsm_retorno(Token* t);
-int fsm_return(Token* t);
-int fsm_chamada(Token* t);
-int fsm_expressao(Token* t);
+int fsm_programa(Token* t);
+int fsm_definicao(Token* t);
+int fsm_funcao(Token* t);
+int fsm_escopo(Token* t);
+int fsm_variavel(Token* t);
+int fsm_condicional(Token* t);
 int fsm_repeticao(Token* t);
-int fsm_atribuicao(Token* t);
-int fsm_term_and(Token* t);
-int fsm_term_equal(Token* t);
-int fsm_term_relacional(Token* t);
-int fsm_term_add(Token* t);
-int fsm_term_mult(Token* t);
-int fsm_term_primary(Token* t);
-int fsm_contabool(Token* t);
-
+int fsm_comando(Token* t);
+int fsm_expressao(Token* t);
+int fsm_termodecimal(Token* t);
+int fsm_termocomp(Token* t);
+int fsm_termoprimario(Token* t);
 
 #endif
