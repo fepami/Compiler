@@ -25,9 +25,9 @@ const char* OPERATORS[] = {
 const char* RESERVED_WORDS[] = {
     "int", "float", "string", "bool",
     "function", "program", "deftype",
-    "if", "else", "while", "return", 
+    "if", "else", "elsif", "while", "return",
     "var", "persistent", "const",
-    "true", "false" 
+    "true", "false"
 };
 
 int isInCharArray(const char array[], const unsigned arraySize, const char c) {

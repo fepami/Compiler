@@ -13,13 +13,13 @@
   <state id="4" name="q4">
   </state>
   <state id="5" name="q5">
+    <final/>
   </state>
   <state id="6" name="q6">
   </state>
   <state id="7" name="q7">
   </state>
   <state id="8" name="q8">
-    <final/>
   </state>
   <state id="9" name="q9">
   </state>
@@ -33,121 +33,105 @@
   </state>
   <state id="14" name="q14">
   </state>
-  <state id="15" name="q15">
-  </state>
   <transition>
     <from>0</from>
     <to>1</to>
-    <read>"var"</read>
-  </transition>
-  <transition>
-    <from>0</from>
-    <to>1</to>
-    <read>"persistent"</read>
-  </transition>
-  <transition>
-    <from>0</from>
-    <to>1</to>
-    <read>"const"</read>
+    <read>TIPO</read>
   </transition>
   <transition>
     <from>1</from>
     <to>2</to>
-    <read>TIPO</read>
+    <read>IDENTIFICADOR</read>
   </transition>
   <transition>
-    <from>2</from>
+    <from>1</from>
     <to>3</to>
-    <read>IDENTIFICADOR</read>
+    <read>"["</read>
   </transition>
   <transition>
     <from>2</from>
     <to>4</to>
-    <read>"[]"</read>
+    <read>"="</read>
   </transition>
   <transition>
     <from>2</from>
     <to>5</to>
-    <read>"["</read>
+    <read>";"</read>
+  </transition>
+  <transition>
+    <from>2</from>
+    <to>6</to>
+    <read>","</read>
   </transition>
   <transition>
     <from>3</from>
     <to>7</to>
-    <read>"="</read>
+    <read>"]"</read>
   </transition>
   <transition>
     <from>3</from>
     <to>8</to>
-    <read>";"</read>
-  </transition>
-  <transition>
-    <from>3</from>
-    <to>9</to>
-    <read>","</read>
+    <read>INTEIRO</read>
   </transition>
   <transition>
     <from>4</from>
-    <to>12</to>
-    <read>IDENTIFICADOR</read>
-  </transition>
-  <transition>
-    <from>5</from>
-    <to>6</to>
-    <read>INTEIRO</read>
+    <to>10</to>
+    <read>EXPRESSAO</read>
   </transition>
   <transition>
     <from>6</from>
     <to>9</to>
-    <read>"]"</read>
+    <read>IDENTIFICADOR</read>
   </transition>
   <transition>
     <from>7</from>
     <to>11</to>
-    <read>EXPRESSAO</read>
-  </transition>
-  <transition>
-    <from>9</from>
-    <to>10</to>
     <read>IDENTIFICADOR</read>
   </transition>
   <transition>
-    <from>10</from>
-    <to>8</to>
+    <from>8</from>
+    <to>6</to>
+    <read>"]"</read>
+  </transition>
+  <transition>
+    <from>9</from>
+    <to>5</to>
     <read>";"</read>
   </transition>
   <transition>
-    <from>10</from>
-    <to>9</to>
+    <from>9</from>
+    <to>6</to>
     <read>","</read>
   </transition>
   <transition>
-    <from>11</from>
-    <to>8</to>
+    <from>10</from>
+    <to>5</to>
     <read>";"</read>
+  </transition>
+  <transition>
+    <from>11</from>
+    <to>12</to>
+    <read>"="</read>
   </transition>
   <transition>
     <from>12</from>
     <to>13</to>
-    <read>"="</read>
+    <read>"{"</read>
   </transition>
   <transition>
     <from>13</from>
     <to>14</to>
-    <read>"{"</read>
-  </transition>
-  <transition>
-    <from>14</from>
-    <to>15</to>
     <read>EXPRESSAO</read>
   </transition>
   <transition>
-    <from>15</from>
-    <to>14</to>
+    <from>14</from>
+    <to>13</to>
     <read>","</read>
   </transition>
   <transition>
-    <from>15</from>
-    <to>11</to>
+    <from>14</from>
+    <to>10</to>
     <read>"}"</read>
   </transition>
 </structure>
+        

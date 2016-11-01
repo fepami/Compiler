@@ -7,34 +7,24 @@
   <state id="1" name="q1">
     <final/>
   </state>
+  <state id="2" name="q2">
+  </state>
+  <state id="3" name="q3">
+    <final/>
+  </state>
   <transition>
     <from>0</from>
     <to>1</to>
-    <read>IDENTIFICADOR</read>
+    <read>TERMODECIMAL</read>
   </transition>
   <transition>
-    <from>0</from>
-    <to>1</to>
-    <read>CHAMADA</read>
+    <from>1</from>
+    <to>2</to>
+    <read>OPERADOR</read>
   </transition>
   <transition>
-    <from>0</from>
-    <to>1</to>
-    <read>CONTADECIMAL</read>
-  </transition>
-  <transition>
-    <from>0</from>
-    <to>1</to>
-    <read>CONTAFLOAT</read>
-  </transition>
-  <transition>
-    <from>0</from>
-    <to>1</to>
-    <read>CONTABOOL</read>
-  </transition>
-  <transition>
-    <from>0</from>
-    <to>1</to>
-    <read>STRING</read>
+    <from>2</from>
+    <to>3</to>
+    <read>EXPRESSAO</read>
   </transition>
 </structure>
