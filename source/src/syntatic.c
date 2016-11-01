@@ -148,6 +148,7 @@ int analyze(FILE* fp) {
             if((ret = nextToken(fp, &state.curr_token)) == 0) {
                 break;
             }
+            printToken(state.curr_token);
         }
 
         state.get_token_flag = 1;
@@ -362,7 +363,7 @@ int fsm_variavel(Token* t){
             }
             break;
         case 2:
-            if (t->tokenClass == CLASS_DELIMITER && t->value.charValue == '=') {
+            if (t->tokenClass == CLASS_OPERATOR && strcmp(t->value.stringValue, "=") == 0) {
                 semantic_tbd();
                 return 4;
             } else if (t->tokenClass == CLASS_DELIMITER && t->value.charValue == ';') {
@@ -423,7 +424,7 @@ int fsm_variavel(Token* t){
             }
             break;
         case 11:
-            if (t->tokenClass == CLASS_OPERATOR && t->value.charValue == '=') {
+            if (t->tokenClass == CLASS_OPERATOR && strcmp(t->value.stringValue, "=") == 0) {
                 semantic_tbd();
                 return 12;
             }
@@ -565,7 +566,7 @@ int fsm_comando(Token* t){
             }
             break;
         case 1:
-            if (t->tokenClass == CLASS_OPERATOR && t->value.charValue == '=') {
+            if (t->tokenClass == CLASS_OPERATOR && strcmp(t->value.stringValue, "=") == 0) {
                 semantic_tbd();
                 return 2;
             } else if (t->tokenClass == CLASS_DELIMITER && t->value.charValue == '(') {
@@ -625,9 +626,15 @@ int fsm_expressao(Token* t){
             semantic_tbd();
             return call_sm(FSM_TERMODECIMAL, 1);
         case 1:
-            // Estado final
-            pop(&stack);
-            return state.current_sub_machine_state;
+            if(t->tokenClass == CLASS_OPERATOR &&
+                (  strcmp(t->value.stringValue, "+" ) == 0 || strcmp(t->value.stringValue, "-") == 0
+                || strcmp(t->value.stringValue, "/" ) == 0 || strcmp(t->value.stringValue, "*" ) == 0)){
+                semantic_tbd();
+                return 2;
+            }else{
+                pop(&stack);
+                return state.current_sub_machine_state;
+            }
         case 2:
             semantic_tbd();
             return call_sm(FSM_EXPRESSAO, 3);
@@ -641,57 +648,113 @@ int fsm_expressao(Token* t){
 int fsm_termodecimal(Token* t){
     switch (state.current_sub_machine_state) {
         case 0:
-            break;
+            semantic_tbd();
+            return call_sm(FSM_TERMOCOMP, 1);
         case 1:
+            if(t->tokenClass == CLASS_OPERATOR &&
+                (  strcmp(t->value.stringValue, "&" ) == 0 || strcmp(t->value.stringValue, "|") == 0
+                || strcmp(t->value.stringValue, "^" ) == 0 )){
+                semantic_tbd();
+                return 2;
+            }else{
+                pop(&stack);
+                return state.current_sub_machine_state;
+            }
             break;
         case 2:
-            break;
+            semantic_tbd();
+            return call_sm(FSM_TERMODECIMAL, 3);
         case 3:
-            break;
+            pop(&stack);
+            return state.current_sub_machine_state;
     }
     return -1;
 }
 int fsm_termocomp(Token* t){
     switch (state.current_sub_machine_state) {
         case 0:
-            break;
+            semantic_tbd();
+            return call_sm(FSM_TERMOPRIMARIO, 1);
         case 1:
+            if(t->tokenClass == CLASS_OPERATOR &&
+                (  strcmp(t->value.stringValue, "<" ) == 0 || strcmp(t->value.stringValue, "<=") == 0
+                || strcmp(t->value.stringValue, ">" ) == 0 || strcmp(t->value.stringValue, ">=") == 0
+                || strcmp(t->value.stringValue, "==") == 0 || strcmp(t->value.stringValue, "!=") == 0
+                || strcmp(t->value.stringValue, "&&") == 0 || strcmp(t->value.stringValue, "||") == 0 )){
+                semantic_tbd();
+                return 2;
+            }else{
+                pop(&stack);
+                return state.current_sub_machine_state;
+            }
             break;
         case 2:
-            break;
+            semantic_tbd();
+            return call_sm(FSM_TERMOCOMP, 3);
         case 3:
-            break;
-        case 4:
-            break;
-        case 5:
-            break;
-        case 6:
-            break;
-        case 7:
-            break;
-        case 8:
-            break;
+            pop(&stack);
+            return state.current_sub_machine_state;
     }
     return -1;
 }
+
 int fsm_termoprimario(Token* t){
     switch (state.current_sub_machine_state) {
         case 0:
+            if(t->tokenClass == CLASS_IDENTIFIER){
+                semantic_tbd();
+                return 1;
+            }else if(t->tokenClass == CLASS_DELIMITER && t->value.charValue == '('){
+                semantic_tbd();
+                return 2;
+            }else if(t->tokenClass == CLASS_INT || t->tokenClass == CLASS_FLOAT || t->tokenClass == CLASS_STRING_LIT){
+                semantic_tbd();
+                return 3;
+            }
             break;
         case 1:
+            if(t->tokenClass == CLASS_DELIMITER && t->value.charValue == '('){
+                semantic_tbd();
+                return 4;
+            }else{
+                pop(&stack);
+                return state.current_sub_machine_state;
+            }
             break;
         case 2:
-            break;
+            semantic_tbd();
+            return call_sm(FSM_EXPRESSAO, 8);
         case 3:
-            break;
+            pop(&stack);
+            return state.current_sub_machine_state;
         case 4:
+            if(t->tokenClass == CLASS_DELIMITER && t->value.charValue == ')'){
+                semantic_tbd();
+                return 3;
+            }else{
+                semantic_tbd();
+                return call_sm(FSM_EXPRESSAO, 5);
+            }
             break;
         case 5:
+            if(t->tokenClass == CLASS_DELIMITER && t->value.charValue == ')'){
+                semantic_tbd();
+                return 3;
+            }else if(t->tokenClass == CLASS_DELIMITER && t->value.charValue == ','){
+                semantic_tbd();
+                return 6;
+            }
             break;
         case 6:
-            break;
+            semantic_tbd();
+            return call_sm(FSM_EXPRESSAO, 5);
         case 7:
+            if(t->tokenClass == CLASS_DELIMITER && t->value.charValue == ')'){
+                semantic_tbd();
+                return 3;
+            }
             break;
+
     }
     return -1;
 }

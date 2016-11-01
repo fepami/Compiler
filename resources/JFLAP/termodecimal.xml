@@ -1,30 +1,41 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<structure>
-  <type>fa</type>
-  <state id="0" name="q0">
-    <initial/>
-  </state>
-  <state id="1" name="q1">
-    <final/>
-  </state>
-  <state id="2" name="q2">
-  </state>
-  <state id="3" name="q3">
-    <final/>
-  </state>
-  <transition>
-    <from>0</from>
-    <to>1</to>
-    <read>TERMOBOOL</read>
-  </transition>
-  <transition>
-    <from>1</from>
-    <to>2</to>
-    <read>OPERADORBOOL</read>
-  </transition>
-  <transition>
-    <from>2</from>
-    <to>3</to>
-    <read>TERMODECIMAL</read>
-  </transition>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><!--Created with JFLAP 6.4.--><structure>
+	<type>fa</type>
+	<automaton>
+		<!--The list of states.-->
+		<state id="0" name="q0">
+			<x>255.0</x>
+			<y>30.0</y>
+			<initial/>
+		</state>
+		<state id="1" name="q1">
+			<x>30.0</x>
+			<y>190.0</y>
+			<final/>
+		</state>
+		<state id="2" name="q2">
+			<x>255.0</x>
+			<y>351.0</y>
+		</state>
+		<state id="3" name="q3">
+			<x>481.0</x>
+			<y>190.0</y>
+			<final/>
+		</state>
+		<!--The list of transitions.-->
+		<transition>
+			<from>0</from>
+			<to>1</to>
+			<read>TERMOCOMP</read>
+		</transition>
+		<transition>
+			<from>2</from>
+			<to>3</to>
+			<read>TERMODECIMAL</read>
+		</transition>
+		<transition>
+			<from>1</from>
+			<to>2</to>
+			<read>OPERADORBOOL</read>
+		</transition>
+	</automaton>
 </structure>

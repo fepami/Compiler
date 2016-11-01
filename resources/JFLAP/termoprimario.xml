@@ -20,8 +20,6 @@
   </state>
   <state id="7" name="q7">
   </state>
-  <state id="8" name="q8">
-  </state>
   <transition>
     <from>0</from>
     <to>1</to>
@@ -59,7 +57,7 @@
   </transition>
   <transition>
     <from>2</from>
-    <to>8</to>
+    <to>7</to>
     <read>EXPRESSAO</read>
   </transition>
   <transition>
@@ -69,31 +67,26 @@
   </transition>
   <transition>
     <from>4</from>
-    <to>6</to>
+    <to>3</to>
     <read>")"</read>
   </transition>
   <transition>
     <from>5</from>
-    <to>7</to>
+    <to>6</to>
     <read>","</read>
   </transition>
   <transition>
     <from>5</from>
-    <to>6</to>
+    <to>3</to>
     <read>")"</read>
   </transition>
   <transition>
     <from>6</from>
-    <to>3</to>
-    <read>";"</read>
-  </transition>
-  <transition>
-    <from>7</from>
     <to>5</to>
     <read>EXPRESSAO</read>
   </transition>
   <transition>
-    <from>8</from>
+    <from>7</from>
     <to>3</to>
     <read>")"</read>
   </transition>

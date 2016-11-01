@@ -16,7 +16,8 @@ typedef enum {
     FSM_EXPRESSAO,
     FSM_TERMODECIMAL,
     FSM_TERMOCOMP,
-    FSM_TERMOPRIMARIO
+    FSM_TERMOPRIMARIO,
+    FSM_SIZE
 } sub_machine_t;
 
 /*
