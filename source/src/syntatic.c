@@ -183,79 +183,252 @@ int is_type(Token* t) {
  *      Internal state functions
  */
 
-////final state
-//pop(&stack);
-//return state.current_sub_machine_state;
-
 int fsm_programa(Token* t){
     switch (state.current_sub_machine_state) {
-        
+        case 0:
+            if(t->tokenClass == CLASS_RESERVED_WORD && strcmp(t->value.stringValue, "program") == 0) {
+                semantic_tbd();
+                return 1;
+            }
+            break;
+        case 1:
+            semantic_tbd();
+            return call_sm(FSM_ESCOPO, 2);
+        case 2:
+            // Estado final
+            pop(&stack);
+            return state.current_sub_machine_state;
     }
     return -1;
 }
 int fsm_definicao(Token* t){
     switch (state.current_sub_machine_state) {
-        
+        case 0:
+            break;
+        case 1:
+            break;
+        case 2:
+            break;
+        case 3:
+            break;
+        case 4:
+            break;
+        case 5:
+            break;
+        case 6:
+            break;
+        case 7:
+            break;
     }
     return -1;
 }
 int fsm_funcao(Token* t){
     switch (state.current_sub_machine_state) {
-        
+        case 0:
+            break;
+        case 1:
+            break;
+        case 2:
+            break;
+        case 3:
+            break;
+        case 4:
+            break;
+        case 5:
+            break;
+        case 6:
+            break;
+        case 7:
+            break;
+        case 8:
+            break;
+        case 9:
+            break;
     }
     return -1;
 }
 int fsm_escopo(Token* t){
     switch (state.current_sub_machine_state) {
-        
+        case 0:
+            break;
+        case 1:
+            break;
+        case 2:
+            break;
     }
     return -1;
 }
 int fsm_variavel(Token* t){
     switch (state.current_sub_machine_state) {
-        
+        case 0:
+            break;
+        case 1:
+            break;
+        case 2:
+            break;
+        case 3:
+            break;
+        case 4:
+            break;
+        case 5:
+            break;
+        case 6:
+            break;
+        case 7:
+            break;
+        case 8:
+            break;
+        case 9:
+            break;
+        case 10:
+            break;
+        case 11:
+            break;
+        case 12:
+            break;
+        case 13:
+            break;
+        case 14:
+            break;
     }
     return -1;
 }
 int fsm_condicional(Token* t){
     switch (state.current_sub_machine_state) {
-        
+        case 0:
+            break;
+        case 1:
+            break;
+        case 2:
+            break;
+        case 3:
+            break;
+        case 4:
+            break;
+        case 5:
+            break;
+        case 6:
+            break;
+        case 7:
+            break;
+        case 8:
+            break;
+        case 9:
+            break;
     }
     return -1;
 }
 int fsm_repeticao(Token* t){
     switch (state.current_sub_machine_state) {
-        
+        case 0:
+            break;
+        case 1:
+            break;
+        case 2:
+            break;
+        case 3:
+            break;
+        case 4:
+            break;
+        case 5:
+            break;
     }
     return -1;
 }
 int fsm_comando(Token* t){
     switch (state.current_sub_machine_state) {
-        
+        case 0:
+            break;
+        case 1:
+            break;
+        case 2:
+            break;
+        case 3:
+            break;
+        case 4:
+            break;
+        case 5:
+            break;
+        case 6:
+            break;
+        case 7:
+            break;
+        case 8:
+            break;
+        case 9:
+            break;
+        case 10:
+            break;
     }
     return -1;
 }
 int fsm_expressao(Token* t){
     switch (state.current_sub_machine_state) {
-        
+        case 0:
+            break;
+        case 1:
+            break;
+        case 2:
+            break;
+        case 3:
+            break;
     }
     return -1;
 }
 int fsm_termodecimal(Token* t){
     switch (state.current_sub_machine_state) {
-        
+        case 0:
+            break;
+        case 1:
+            break;
+        case 2:
+            break;
+        case 3:
+            break;
     }
     return -1;
 }
 int fsm_termocomp(Token* t){
     switch (state.current_sub_machine_state) {
-        
+        case 0:
+            break;
+        case 1:
+            break;
+        case 2:
+            break;
+        case 3:
+            break;
+        case 4:
+            break;
+        case 5:
+            break;
+        case 6:
+            break;
+        case 7:
+            break;
+        case 8:
+            break;
     }
     return -1;
 }
 int fsm_termoprimario(Token* t){
     switch (state.current_sub_machine_state) {
-        
+        case 0:
+            break;
+        case 1:
+            break;
+        case 2:
+            break;
+        case 3:
+            break;
+        case 4:
+            break;
+        case 5:
+            break;
+        case 6:
+            break;
+        case 7:
+            break;
     }
     return -1;
 }
