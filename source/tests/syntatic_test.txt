@@ -1,0 +1,12 @@
+program {
+        var int resultado = funcao(numero);
+        write("Resultado: ");
+        write(resultado);
+
+        write("Digite outro numero:");
+        numero = read();
+
+        resultado = funcao(numero);
+        write("Resultado: ");
+        write(resultado);
+}
