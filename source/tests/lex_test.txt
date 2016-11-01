@@ -1,16 +1,54 @@
+var int i;
+var int id = 10;
 
-int func(int integer) {
-	string z;
-	z = "literal example";
-	int a;
-	a = 10;
-	float b;
-	b = 0.5;
-	if(a == b){
-            return a;
+var string[] nomes = { "Felipe", "Thiago"};
+var string[5] vetor;
+
+deftype novo = {
+	int numero,
+	float decimal,
+	string nome
+};
+
+#Comentario
+function funcao(int numero) : int {
+	# Variavel "statica"
+	persistent int a = 0;
+
+	#Escopo
+	{
+		#constante
+		const string literal = "Literal constante";
+		a = a + numero;
 	}
-	write(z, integer);
-	return integer;
+
+	# condicional
+	if( a == numero){
+		write("Igual");
+	}else{
+		write("Diferente");
+	}
+
+	i = 0;
+	while(i < numero){
+		i = i + 1;
+	}
+
+	return a;
 }
 
-#comentario bla bla 
+program {
+	write("Digite um numero:");
+	var int numero = read();
+
+	var int resultado = funcao(numero);
+	write("Resultado: ");
+	write(resultado);
+
+	write("Digite outro numero:");
+	numero = read();
+
+	resultado = funcao(numero);
+	write("Resultado: ");
+	write(resultado);
+}

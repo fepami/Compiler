@@ -15,20 +15,20 @@ STRING			= 	""" {LETRA | SIMBOLO | DIGITO | EOL} """ .
 
 TIPO 			= 	"int" | "float" | "bool" | "string" . 
 IDENTIFICADOR 	= 	LETRA { LETRA } .
+COMENTARIO 		= 	"#" {LETRA | SIMBOLO | DIGITO} EOL .
 
 PROGRAMA 		= 	"program" ESCOPO .
 
-COMENTARIO 		= 	"#" {LETRA | SIMBOLO | DIGITO} EOL .
 DEFINICAO		= 	"deftype" IDENTIFICADOR "{" {TIPO IDENTIFICADOR ","} TIPO IDENTIFICADOR "}" ";" .
-FUNCAO			=	"function" IDENTIFICADOR "(" {TIPO IDENTIFICADOR ","} TIPO IDENTIFICADOR ")" ESCOPO | "function" IDENTIFICADOR "(" {TIPO IDENTIFICADOR ","} TIPO IDENTIFICADOR ")" "->" TIPO ESCOPO .
+FUNCAO			=	"function" IDENTIFICADOR "(" {TIPO IDENTIFICADOR ","} TIPO IDENTIFICADOR ")" ESCOPO | "function" IDENTIFICADOR "(" {TIPO IDENTIFICADOR ","} TIPO IDENTIFICADOR ")" ":" TIPO ESCOPO .
 
 ESCOPO			= 	"{" { COMANDO } "}" .
 
-VARIAVEL 		= 	("var" | "persistent" | "const") TIPO IDENTIFICADOR ":=" EXPRESSAO ";" | ("var" | "persistent" | "const") TIPO {IDENTIFICADOR ","} IDENTIFICADOR ";" | ("var" | "persistent" | "const") TIPO "[]" IDENTIFICADOR ":=" "{" {EXPRESSAO ","} EXPRESSAO "}" ";" | ("var" | "persistent" | "const") TIPO "[" INTEIRO "]" {IDENTIFICADOR ","} IDENTIFICADOR ";" . 
+VARIAVEL 		= 	("var" | "persistent" | "const") TIPO IDENTIFICADOR "=" EXPRESSAO ";" | ("var" | "persistent" | "const") TIPO {IDENTIFICADOR ","} IDENTIFICADOR ";" | ("var" | "persistent" | "const") TIPO "[]" IDENTIFICADOR "=" "{" {EXPRESSAO ","} EXPRESSAO "}" ";" | ("var" | "persistent" | "const") TIPO "[" INTEIRO "]" {IDENTIFICADOR ","} IDENTIFICADOR ";" . 
 
 CONDICIONAL 	= 	"if" "(" EXPRESSAO ")" ESCOPO | "if" "(" EXPRESSAO ")" ESCOPO { "else if" "(" EXPRESSAO ")" ESCOPO } "else" ESCOPO .
 REPETICAO 		=	"while" "(" EXPRESSAO ")" ESCOPO .
-ATRIBUICAO 		=	IDENTIFICADOR ":=" EXPRESSAO ";" .
+ATRIBUICAO 		=	IDENTIFICADOR "=" EXPRESSAO ";" .
 CHAMADA			= 	IDENTIFICADOR "(" [{EXPRESSAO ","} EXPRESSAO] ")" ";".	
 RETORNO 		= 	"return" EXPRESSAO ";" .
 

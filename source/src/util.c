@@ -3,10 +3,10 @@
 #include "util.h"
 
 const char CHAR_OPERATORS[] = {
-    '=', '>', '<', '!', '+', '-', '*', '/', '^', '&', '|' 
+    '=', '>', '<', '!', '+', '-', '*', '/', '^', '&', '|'
 };
 const char STRICT_DELIMITERS[] = {
-    '{', '}', '[', ']', '(', ')', ',', ';'
+    '{', '}', '[', ']', '(', ')', ',', ';', ':'
 };
 const char SPACE_DELIMITERS[] = {
     ' ', '\t'
@@ -23,8 +23,11 @@ const char* OPERATORS[] = {
 };
 
 const char* RESERVED_WORDS[] = {
-    "int", "float", "string", "function", "if", "else", 
-    "while", "return", "const", "break", "continue"
+    "int", "float", "string", "bool",
+    "function", "program", "deftype",
+    "if", "else", "while", "return", 
+    "var", "persistent", "const",
+    "true", "false" 
 };
 
 int isInCharArray(const char array[], const unsigned arraySize, const char c) {

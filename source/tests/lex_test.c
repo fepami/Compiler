@@ -20,7 +20,7 @@ static void firstTokenTest(void **state) {
     assert_int_equal(nextToken(fp, &firstToken), 1);
     assert_non_null(firstToken);
     assert_int_equal(firstToken->tokenClass, CLASS_RESERVED_WORD);
-    assert_string_equal(firstToken->value.stringValue, "int");
+    assert_string_equal(firstToken->value.stringValue, "var");
 
     freeToken(&firstToken);
     fclose(fp);
@@ -44,7 +44,7 @@ static void allTokenTest(void **state) {
         count++;
     }
 
-    assert_int_equal(count, 50);
+    assert_int_equal(count, 178);
     fclose(fp);
 }
 
