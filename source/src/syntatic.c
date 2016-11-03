@@ -30,7 +30,7 @@ void semantic_tbd(){
 }
 
 void push(Stack* s, SubMachine subMachine, int retState) {
-    StackNode* sn = malloc(sizeof(StackNode*));
+    StackNode* sn = (StackNode*) malloc(sizeof(StackNode));
     sn->next = s->top;
     sn->subMachine = subMachine;
     sn->state = retState;
@@ -45,7 +45,7 @@ void pop(Stack* s) {
         state.currentSubMachineState = -1;
         return;
     }
-    
+
     state.currentSubMachine= s->top->subMachine;
     state.currentSubMachineState= s->top->state;
 
@@ -137,7 +137,7 @@ int subPrograma(Token* t){
         case 2:
             return returnSubMachine();
     }
-    
+
     return -1;
 }
 int subDefinicao(Token* t){
