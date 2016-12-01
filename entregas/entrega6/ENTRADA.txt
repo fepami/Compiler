@@ -1,0 +1,16 @@
+program {
+    const string texto = "Digite um numero:";
+	write(texto);
+	var int numero = read();
+
+	var int resultado = funcao(numero);
+	write("Resultado: ");
+	write(resultado);
+
+	write("Digite outro numero:");
+	numero = read();
+
+	resultado = funcao(numero);
+	write("Resultado: ");
+	write(resultado);
+}
